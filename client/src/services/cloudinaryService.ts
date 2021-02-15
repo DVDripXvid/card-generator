@@ -1,3 +1,4 @@
+export const cloudinaryContentRoot = 'https://res.cloudinary.com/dvdripxvid/image/upload';
 
 interface ISignatureParams {
   public_id: string;
