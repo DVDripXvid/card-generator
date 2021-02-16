@@ -14,7 +14,7 @@ const QuestCard = forwardRef<HTMLDivElement, IProps>((props, ref) => {
       <div>{quest.conditions}</div>
       <div>Jutifalat: {quest.rewards}</div>
       {quest.penalties && <div>Bünti: {quest.penalties}</div>}
-      {quest.penalties && <div>Szabály: {quest.rules}</div>}
+      {quest.rules && <div>Szabály: {quest.rules}</div>}
     </div>
   );
 });
