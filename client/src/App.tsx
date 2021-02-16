@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { IQuest } from "./models/quest";
 import QuestCard from "./components/cards/QuestCard";
+import CardItem from "./containers/CardItem";
 
 const cardOptions: { label: string; value: 'adventurers' | 'quests' }[] = [
   {
@@ -107,14 +108,22 @@ function App() {
         </div>
         <Button onClick={getCards} text="Refresh cards" />
         <a download={`${selected.value}_deck.csv`} href={csvData}>
-          <Button onClick={() => {/* SKIP */ }} text="Generate csv" />
+          <Button onClick={() => {/* NO_OP */ }} text="Generate csv" />
         </a>
         <Button onClick={updateAll} text="Upload all" />
         {isUploading && <FontAwesomeIcon icon={faCircleNotch} spin />}
       </div>
       <div className="flex flex-row flex-wrap gap-3 p-3">
-        {selected.value === 'adventurers' && adventurers.map(a => (<AdventurerCard key={a.id} ref={ref => { if (ref) { cardRefs.current[a.id] = ref; } }} adventurer={a} />))}
-        {selected.value === 'quests' && quests.map(q => (<QuestCard key={q.id} ref={ref => { if (ref) { cardRefs.current[q.id] = ref; } }} quest={q} />))}
+        {selected.value === 'adventurers' && adventurers.map(a => (
+          <CardItem key={a.id} card={a} element={cardRefs.current[a.id]} uploadFolder={selected.value} >
+            <AdventurerCard key={a.id} ref={ref => { if (ref) { cardRefs.current[a.id] = ref; } }} adventurer={a} />
+          </CardItem>
+        ))}
+        {selected.value === 'quests' && quests.map(q => (
+          <CardItem key={q.id} card={q} element={cardRefs.current[q.id]} uploadFolder={selected.value} >
+            <QuestCard key={q.id} ref={ref => { if (ref) { cardRefs.current[q.id] = ref; } }} quest={q} />
+          </CardItem>
+        ))}
       </div>
     </div >
   );
