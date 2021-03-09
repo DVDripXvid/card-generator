@@ -1,6 +1,6 @@
-export interface IQuest {
-  id: string;
-  name: string;
+import { ICard } from "./card";
+
+export interface IQuest extends ICard {
   no: string;
   conditions: string;
   rewards: string;

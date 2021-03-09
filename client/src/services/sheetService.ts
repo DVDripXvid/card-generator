@@ -1,12 +1,16 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { IAdventurer } from '../models/adventurer';
+import { IItem } from '../models/item';
 import { IQuest } from '../models/quest';
+import { ISpell } from '../models/spell';
 
 const sheetId = '1ianY6azMlWc9EYeFLOY8hAABJK7j8ohODm1RfU2n3pQ';
 const apiKey = 'AIzaSyAjJpvbwgwVzM35-axnY7gLGyghxON8zfA';
 
 const ADVENTURERS = 'Adventurers';
 const QUESTS = 'Quests';
+const ITEMS = 'Items';
+const SPELLS = 'Spells';
 
 class SheetService {
   private readonly doc = new GoogleSpreadsheet(sheetId);
@@ -27,6 +31,18 @@ class SheetService {
     await this.load;
     const rows = await this.getRows(QUESTS);
     return rows as unknown as IQuest[];
+  }
+
+  async getItems() {
+    await this.load;
+    const rows = await this.getRows(ITEMS);
+    return rows as unknown as IItem[];
+  }
+
+  async getSpells() {
+    await this.load;
+    const rows = await this.getRows(SPELLS);
+    return rows as unknown as ISpell[];
   }
 
   private async getRows(sheet: string) {

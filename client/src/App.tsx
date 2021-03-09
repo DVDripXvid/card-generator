@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Select from 'react-select'
 import AdventurerCard from "./components/cards/AdventurerCard";
 import { IAdventurer } from "./models/adventurer";
@@ -11,8 +11,12 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { IQuest } from "./models/quest";
 import QuestCard from "./components/cards/QuestCard";
 import CardItem from "./containers/CardItem";
+import { IItem } from "./models/item";
+import { ISpell } from "./models/spell";
+import ItemCard from "./components/cards/ItemCard";
+import SpellCard from "./components/cards/SpellCard";
 
-const cardOptions: { label: string; value: 'adventurers' | 'quests' }[] = [
+const cardOptions: { label: string; value: 'adventurers' | 'quests' | 'items' | 'spells' }[] = [
   {
     label: 'Adventurers',
     value: 'adventurers'
@@ -21,12 +25,22 @@ const cardOptions: { label: string; value: 'adventurers' | 'quests' }[] = [
     label: 'Quests',
     value: 'quests'
   },
+  {
+    label: 'Items',
+    value: 'items'
+  },
+  {
+    label: 'Spells',
+    value: 'spells'
+  },
 ];
 
 function App() {
   const [selected, setSelected] = useState(cardOptions[0]);
   const [adventurers, setAdventurers] = useState<IAdventurer[]>([]);
   const [quests, setQuests] = useState<IQuest[]>([]);
+  const [items, setItems] = useState<IItem[]>([]);
+  const [spells, setSpells] = useState<ISpell[]>([]);
   const [csvData, setCsvData] = useState('');
   const cardRefs = useRef<Record<string, HTMLDivElement>>({});
   const [isUploading, setIsUploading] = useState(false);
@@ -40,6 +54,12 @@ function App() {
           break;
         case 'quests':
           sheetService.getQuests().then(setQuests);
+          break;
+        case 'items':
+          sheetService.getItems().then(setItems);
+          break;
+        case 'spells':
+          sheetService.getSpells().then(setSpells);
           break;
       }
     },
@@ -64,6 +84,12 @@ function App() {
         case 'quests':
           cards = quests;
           break;
+        case 'items':
+          cards = items;
+          break;
+        case 'spells':
+          cards = spells;
+          break;
       }
 
       const rows = [['label', 'image']];
@@ -80,7 +106,7 @@ function App() {
 
       setCsvData(csvContent);
     },
-    [adventurers, quests, selected.value, setCsvData]
+    [adventurers, quests, items, spells, selected.value, setCsvData]
   )
 
   const updateAll = useCallback(
@@ -124,8 +150,18 @@ function App() {
             <QuestCard key={q.id} ref={ref => { if (ref) { cardRefs.current[q.id] = ref; } }} quest={q} />
           </CardItem>
         ))}
+        {selected.value === 'items' && items.map(i => (
+          <CardItem key={i.id} card={i} element={cardRefs.current[i.id]} uploadFolder={selected.value} >
+            <ItemCard key={i.id} ref={ref => { if (ref) { cardRefs.current[i.id] = ref; } }} item={i} />
+          </CardItem>
+        ))}
+        {selected.value === 'spells' && spells.map(s => (
+          <CardItem key={s.id} card={s} element={cardRefs.current[s.id]} uploadFolder={selected.value} >
+            <SpellCard key={s.id} ref={ref => { if (ref) { cardRefs.current[s.id] = ref; } }} spell={s} />
+          </CardItem>
+        ))}
       </div>
-    </div >
+    </div>
   );
 }
 

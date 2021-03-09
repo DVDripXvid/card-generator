@@ -2,13 +2,12 @@ import { faCircleNotch, faExternalLinkAlt, faUpload } from "@fortawesome/free-so
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FC, useCallback, useState } from "react";
 import domtoimage from 'dom-to-image';
-import { IAdventurer } from "../models/adventurer";
-import { IQuest } from "../models/quest";
 import cloudinaryService, { cloudinaryContentRoot } from "../services/cloudinaryService";
+import { ICard } from "../models/card";
 
 
 interface IProps {
-  card: IQuest | IAdventurer;
+  card: ICard;
   uploadFolder: string;
   element: HTMLDivElement;
 }
