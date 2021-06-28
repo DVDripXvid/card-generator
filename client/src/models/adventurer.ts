@@ -1,6 +1,6 @@
-import { ICard } from "./card";
+import { ICardForSale } from "./card";
 
-export interface IAdventurer extends ICard {
+export interface IAdventurer extends ICardForSale {
   story?: string;
   strength: string;
   magic: string;

@@ -1,5 +1,5 @@
-import { ICard } from "./card";
+import { ICardForSale } from "./card";
 
-export interface ISpell extends ICard {
+export interface ISpell extends ICardForSale {
   story: string;
 }

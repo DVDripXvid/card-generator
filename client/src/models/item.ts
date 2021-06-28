@@ -1,6 +1,6 @@
-import { ICard } from "./card";
+import { ICardForSale } from "./card";
 
-export interface IItem extends ICard {
+export interface IItem extends ICardForSale {
   story: string;
   cast: string;
 }
