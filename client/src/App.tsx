@@ -14,7 +14,7 @@ import { IQuest } from "./models/quest";
 import cloudinaryService, { cloudinaryContentRoot } from "./services/cloudinaryService";
 import sheetService from "./services/sheetService";
 
-const cardOptions: { label: string; value: 'adventurers' | 'quests' | 'items' | 'spells' }[] = [
+const cardOptions: { label: string; value: 'adventurers' | 'quests' | 'items' }[] = [
   {
     label: 'Adventurers',
     value: 'adventurers'
@@ -26,10 +26,6 @@ const cardOptions: { label: string; value: 'adventurers' | 'quests' | 'items' | 
   {
     label: 'Items',
     value: 'items'
-  },
-  {
-    label: 'Spells',
-    value: 'spells'
   },
 ];
 
