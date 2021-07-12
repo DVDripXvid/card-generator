@@ -1,14 +1,15 @@
 import { forwardRef } from "react";
-import { IItem } from "../../models/item";
+import { IItem, ItemType } from "../../models/item";
 
 interface IProps {
   item: IItem;
 }
 
-const colorMap: Record<string, string> = {
+const colorMap: Record<ItemType, string> = {
   'Gear': 'bg-green-200',
   'Plot': 'bg-purple-200',
   'Tale': 'bg-gray-200',
+  'Spell': 'bg-red-200',
 };
 
 const ItemCard = forwardRef<HTMLDivElement, IProps>((props, ref) => {
