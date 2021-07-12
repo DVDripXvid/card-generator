@@ -1,9 +1,9 @@
 import { ICard } from "./card";
 
 export interface IQuest extends ICard {
-  no: string;
+  gold: string;
   conditions: string;
-  rewards: string;
+  fame: string;
   penalties?: string;
   rules?: string;
 }
