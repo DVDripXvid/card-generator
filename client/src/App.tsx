@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import Select from 'react-select';
 import Button from "./components/Button";
 import AdventurerCard from "./components/cards/AdventurerCard";
+import ChapterCard from "./components/cards/ChapterCard";
 import ItemCard from "./components/cards/ItemCard";
 import QuestCard from "./components/cards/QuestCard";
 import CardItem from "./containers/CardItem";
@@ -14,7 +15,7 @@ import { IQuest } from "./models/quest";
 import cloudinaryService, { cloudinaryContentRoot } from "./services/cloudinaryService";
 import sheetService from "./services/sheetService";
 
-const cardOptions: { label: string; value: 'adventurers' | 'quests' | 'items' }[] = [
+const cardOptions: { label: string; value: 'adventurers' | 'quests' | 'items' | 'chapters' }[] = [
   {
     label: 'Adventurers',
     value: 'adventurers'
@@ -27,12 +28,17 @@ const cardOptions: { label: string; value: 'adventurers' | 'quests' | 'items' }[
     label: 'Items',
     value: 'items'
   },
+  {
+    label: 'Chapters',
+    value: 'chapters'
+  }
 ];
 
 function App() {
   const [selected, setSelected] = useState(cardOptions[0]);
   const [adventurers, setAdventurers] = useState<IAdventurer[]>([]);
   const [quests, setQuests] = useState<IQuest[]>([]);
+  const [chapters, setChapters] = useState<IQuest[]>([]);
   const [items, setItems] = useState<IItem[]>([]);
   const [csvData, setCsvData] = useState('');
   const cardRefs = useRef<Record<string, HTMLDivElement>>({});
@@ -51,6 +57,8 @@ function App() {
         case 'items':
           sheetService.getItems().then(setItems);
           break;
+        case 'chapters':
+          sheetService.getChapters().then(setChapters);
       }
     },
     [selected.value],
@@ -77,6 +85,9 @@ function App() {
         case 'items':
           cards = items;
           break;
+        case 'chapters':
+          cards = chapters;
+          break;
       }
 
       const rows = [['label', 'image']];
@@ -93,7 +104,7 @@ function App() {
 
       setCsvData(csvContent);
     },
-    [adventurers, quests, items, selected.value, setCsvData]
+    [adventurers, quests, items, chapters, selected.value, setCsvData]
   )
 
   const updateAll = useCallback(
@@ -140,6 +151,11 @@ function App() {
         {selected.value === 'items' && items.map(i => (
           <CardItem key={i.id} card={i} element={cardRefs.current[i.id]} uploadFolder={selected.value} >
             <ItemCard key={i.id} ref={ref => { if (ref) { cardRefs.current[i.id] = ref; } }} item={i} />
+          </CardItem>
+        ))}
+        {selected.value === 'chapters' && chapters.map(i => (
+          <CardItem key={i.id} card={i} element={cardRefs.current[i.id]} uploadFolder={selected.value} >
+            <ChapterCard key={i.id} ref={ref => { if (ref) { cardRefs.current[i.id] = ref; } }} quest={i} />
           </CardItem>
         ))}
       </div>

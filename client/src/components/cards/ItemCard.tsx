@@ -6,10 +6,10 @@ interface IProps {
 }
 
 const colorMap: Record<ItemType, string> = {
-  'Gear': 'bg-green-200',
-  'Plot': 'bg-purple-200',
-  'Tale': 'bg-gray-200',
-  'Spell': 'bg-red-200',
+  'Gear': 'bg-green-300',
+  'Plot': 'bg-purple-300',
+  'Tale': 'bg-gray-300',
+  'Spell': 'bg-red-300',
 };
 
 const ItemCard = forwardRef<HTMLDivElement, IProps>((props, ref) => {
