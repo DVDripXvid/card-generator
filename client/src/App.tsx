@@ -1,19 +1,17 @@
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import domtoimage from 'dom-to-image';
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Select from 'react-select';
 import Button from "./components/Button";
 import AdventurerCard from "./components/cards/AdventurerCard";
 import ChapterCard from "./components/cards/ChapterCard";
 import ItemCard from "./components/cards/ItemCard";
 import QuestCard from "./components/cards/QuestCard";
-import RoleCard from "./components/cards/RoleCard";
 import CardItem from "./containers/CardItem";
 import { IAdventurer } from "./models/adventurer";
 import { IItem } from "./models/item";
 import { IQuest } from "./models/quest";
-import { IRole } from "./models/role";
 import cloudinaryService, { cloudinaryContentRoot } from "./services/cloudinaryService";
 import sheetService from "./services/sheetService";
 
@@ -34,10 +32,6 @@ const cardOptions: { label: string; value: 'adventurers' | 'quests' | 'items' | 
     label: 'Chapters',
     value: 'chapters'
   },
-  {
-    label: 'Roles',
-    value: 'roles'
-  },
 ];
 
 function App() {
@@ -46,7 +40,6 @@ function App() {
   const [quests, setQuests] = useState<IQuest[]>([]);
   const [chapters, setChapters] = useState<IQuest[]>([]);
   const [items, setItems] = useState<IItem[]>([]);
-  const [roles, setRoles] = useState<IRole[]>([]);
   const [csvData, setCsvData] = useState('');
   const cardRefs = useRef<Record<string, HTMLDivElement>>({});
   const [isUploading, setIsUploading] = useState(false);
@@ -66,9 +59,6 @@ function App() {
           break;
         case 'chapters':
           sheetService.getChapters().then(setChapters);
-          break;
-        case 'roles':
-          sheetService.getRoles().then(setRoles);
           break;
       }
     },
@@ -99,9 +89,6 @@ function App() {
         case 'chapters':
           cards = chapters;
           break;
-        case 'roles':
-          cards = roles;
-          break;
       }
 
       const rows = [['label', 'image']];
@@ -118,7 +105,7 @@ function App() {
 
       setCsvData(csvContent);
     },
-    [adventurers, quests, items, chapters, roles, selected.value, setCsvData]
+    [adventurers, quests, items, chapters, selected.value, setCsvData]
   )
 
   const updateAll = useCallback(
@@ -170,11 +157,6 @@ function App() {
         {selected.value === 'chapters' && chapters.map(i => (
           <CardItem key={i.id} card={i} element={cardRefs.current[i.id]} uploadFolder={selected.value} >
             <ChapterCard key={i.id} ref={ref => { if (ref) { cardRefs.current[i.id] = ref; } }} quest={i} />
-          </CardItem>
-        ))}
-        {selected.value === 'roles' && roles.map(i => (
-          <CardItem key={i.id} card={i} element={cardRefs.current[i.id]} uploadFolder={selected.value} >
-            <RoleCard key={i.id} ref={ref => { if (ref) { cardRefs.current[i.id] = ref; } }} role={i} />
           </CardItem>
         ))}
       </div>
